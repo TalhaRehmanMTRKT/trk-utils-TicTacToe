@@ -1,6 +1,6 @@
 # Tic Tac Toe Web Game
 
-A browser-based **Tic Tac Toe** game with **Human vs Human** support and backend logic in **Python (via Pyodide)**.
+A browser-based **Tic Tac Toe** game with **Human vs Human** support**.
 
 ## ✅ Features
 
