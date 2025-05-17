@@ -13,7 +13,7 @@ A browser-based **Tic Tac Toe** game with **Human vs Human** support and backend
 
 ## 🚀 How to Play
 
-1. Open `index.html` in a browser.
+1. Click -> [`START GAME`](https://talharehmanmtrkt.github.io/trk-utils-TicTacToe/).
 2. Click on a grid cell to make a move.
 3. Game ends with a win or draw.
 4. Click "Reset" to restart.
