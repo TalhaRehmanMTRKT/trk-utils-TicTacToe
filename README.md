@@ -1,1 +1,27 @@
-# trk-utils-TicTacToe
+# Tic Tac Toe Web Game
+
+A browser-based **Tic Tac Toe** game with **Human vs Human** support and backend logic in **Python (via Pyodide)**.
+
+## ✅ Features
+
+- Clean, responsive 3x3 grid UI
+- Player 1 (✓) vs Player 2 (✗)
+- Turn tracking
+- Win and draw detection
+- Reset and Info buttons
+- Placeholder for Human vs Computer
+
+## 🚀 How to Play
+
+1. Open `index.html` in a browser.
+2. Click on a grid cell to make a move.
+3. Game ends with a win or draw.
+4. Click "Reset" to restart.
+
+## 👤 Author
+
+**Developed by Talha Rehman**
+
+## 🔮 Coming Soon
+
+- Human vs Computer mode with AI logic.
