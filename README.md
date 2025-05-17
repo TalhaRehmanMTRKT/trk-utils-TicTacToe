@@ -20,7 +20,7 @@ A browser-based **Tic Tac Toe** game with **Human vs Human** support and backend
 
 ## 👤 Author
 
-**Developed by Talha Rehman**
+**Vibe Coded by Talha Rehman**
 
 ## 🔮 Coming Soon
 
