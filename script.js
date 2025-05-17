@@ -1,4 +1,4 @@
-
+﻿
 let board = Array(9).fill("");
 let currentPlayer = "✓";
 let gameOver = false;
@@ -30,14 +30,15 @@ function initGame() {
     }
 }
 
-function makeMove(index) {
+async function makeMove(index) {
     if (board[index] !== "" || gameOver) return;
 
     board[index] = currentPlayer;
     document.querySelectorAll(".cell")[index].innerText = currentPlayer;
 
-    let pyResult = pyodide.globals.get("make_move")(board, currentPlayer, index);
-    let updated = pyResult.toJs({ dict_converter: Object });
+    const pyBoard = pyodide.toPy([...board]);  // Proper conversion to Python list
+    const pyResult = pyodide.globals.get("make_move")(pyBoard, currentPlayer, index);
+    const updated = pyResult.toJs({ dict_converter: Object });
 
     board = updated.board;
     gameOver = updated.status !== "ongoing";
@@ -53,6 +54,7 @@ function makeMove(index) {
         document.getElementById("status").innerText = `Player ${currentPlayer === "✓" ? "1" : "2"}’s turn (${currentPlayer})`;
     }
 }
+
 
 function disableBoard() {
     document.querySelectorAll(".cell").forEach(cell => cell.classList.add("disabled"));
