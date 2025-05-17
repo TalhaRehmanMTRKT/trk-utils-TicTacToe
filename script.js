@@ -36,22 +36,28 @@ async function makeMove(index) {
     board[index] = currentPlayer;
     document.querySelectorAll(".cell")[index].innerText = currentPlayer;
 
-    const pyBoard = pyodide.toPy([...board]);  // Proper conversion to Python list
-    const pyResult = pyodide.globals.get("make_move")(pyBoard, currentPlayer, index);
-    const updated = pyResult.toJs({ dict_converter: Object });
+    try {
+        const pyBoard = pyodide.toPy([...board]);  // Convert JS array to Python list
+        const pyMakeMove = pyodide.globals.get("make_move");
+        const pyResult = pyMakeMove(pyBoard, currentPlayer, index);
+        const updated = pyResult.toJs({ dict_converter: Object });
 
-    board = updated.board;
-    gameOver = updated.status !== "ongoing";
+        board = updated.board;
+        gameOver = updated.status !== "ongoing";
 
-    if (updated.status === "win") {
-        document.getElementById("status").innerText = `${updated.message}`;
-        disableBoard();
-    } else if (updated.status === "draw") {
-        document.getElementById("status").innerText = "It's a draw!";
-        disableBoard();
-    } else {
-        currentPlayer = currentPlayer === "✓" ? "✗" : "✓";
-        document.getElementById("status").innerText = `Player ${currentPlayer === "✓" ? "1" : "2"}’s turn (${currentPlayer})`;
+        if (updated.status === "win") {
+            document.getElementById("status").innerText = `${updated.message}`;
+            disableBoard();
+        } else if (updated.status === "draw") {
+            document.getElementById("status").innerText = "It's a draw!";
+            disableBoard();
+        } else {
+            currentPlayer = currentPlayer === "✓" ? "✗" : "✓";
+            document.getElementById("status").innerText = `Player ${currentPlayer === "✓" ? "1" : "2"}’s turn (${currentPlayer})`;
+        }
+    } catch (err) {
+        console.error("Move failed:", err);
+        alert("Something went wrong. See console for details.");
     }
 }
 
