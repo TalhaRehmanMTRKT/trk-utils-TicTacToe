@@ -5,55 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tic Tac Toe</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap');
+
   body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
     display: flex; 
     flex-direction: column;
     align-items: center;
-    margin: 20px;
-    background: #f0f0f0;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    color: #fff;
   }
   h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
     margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
   }
   #status {
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    min-width: 280px;
   }
   #grid {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    grid-template-rows: repeat(3, 80px);
-    gap: 8px;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   }
   .cell {
-    background: white;
-    border: 2px solid #333;
+    background: #fff;
+    color: #333;
+    border-radius: 15px;
+    border: 2px solid #5a3ea1;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     cursor: pointer;
     user-select: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
-  .cell:hover {
-    background-color: #e0e0e0;
+  .cell:hover:not(.disabled) {
+    background-color: #d6c3ff;
+    transform: scale(1.05);
+  }
+  .cell.disabled {
+    cursor: default;
+    color: #8a7cb3;
   }
   button {
-    margin-top: 20px;
-    padding: 10px 18px;
-    font-size: 1rem;
+    margin-top: 30px;
+    padding: 14px 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
     cursor: pointer;
     border: none;
-    border-radius: 6px;
-    background-color: #333;
+    border-radius: 30px;
+    background: #5a3ea1;
     color: white;
-    transition: background-color 0.2s ease;
+    box-shadow: 0 6px 15px rgba(90, 62, 161, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
   }
   button:hover {
-    background-color: #555;
+    background-color: #7a56d8;
+    box-shadow: 0 8px 20px rgba(122, 86, 216, 0.7);
+  }
+  footer {
+    margin-top: 40px;
+    font-size: 1rem;
+    color: #dcd6f7cc;
+    font-style: italic;
+    user-select: none;
   }
 </style>
 </head>
@@ -63,6 +101,7 @@
 <div id="status">Player 1’s turn (✓)</div>
 <div id="grid"></div>
 <button id="resetBtn">Restart Game</button>
+<footer>Developed by Talha Rehman</footer>
 
 <script>
   let board = Array(9).fill("");
@@ -92,10 +131,12 @@
     board[index] = currentPlayer;
     const cell = document.querySelectorAll(".cell")[index];
     cell.innerText = currentPlayer;
+    cell.classList.add("disabled");
 
     if (checkWin(currentPlayer)) {
       document.getElementById("status").innerText = `Player ${currentPlayer} wins! 🎉`;
       gameOver = true;
+      highlightWin(currentPlayer);
       return;
     }
 
@@ -121,9 +162,27 @@
     );
   }
 
+  function highlightWin(player) {
+    const winningCombinations = [
+      [0,1,2],[3,4,5],[6,7,8], 
+      [0,3,6],[1,4,7],[2,5,8], 
+      [0,4,8],[2,4,6]
+    ];
+    const winCombo = winningCombinations.find(comb =>
+      comb.every(index => board[index] === player)
+    );
+    if (!winCombo) return;
+
+    winCombo.forEach(i => {
+      document.querySelectorAll(".cell")[i].style.backgroundColor = '#9f79f4';
+      document.querySelectorAll(".cell")[i].style.color = '#fff';
+      document.querySelectorAll(".cell")[i].style.fontWeight = '900';
+      document.querySelectorAll(".cell")[i].style.boxShadow = '0 0 15px 5px #a27fff';
+    });
+  }
+
   document.getElementById("resetBtn").addEventListener("click", initGame);
 
-  // Start game when page loads
   window.onload = initGame;
 </script>
 
