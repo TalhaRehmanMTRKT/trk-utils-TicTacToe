@@ -9,9 +9,11 @@ async function loadPyodideAndLogic() {
     await pyodide.runPythonAsync(await (await fetch("game_logic.py")).text());
 }
 
-loadPyodideAndLogic().then(() => {
-    initGame();
-});
+(async () => {
+    await loadPyodideAndLogic();  // ensure Pyodide and Python are ready
+    initGame();                   // only then set up the board
+})();
+
 
 function initGame() {
     const grid = document.getElementById("grid");
@@ -20,7 +22,7 @@ function initGame() {
     gameOver = false;
     currentPlayer = "✓";
     document.getElementById("status").innerText = "Player 1’s turn (✓)";
-    
+
     for (let i = 0; i < 9; i++) {
         const cell = document.createElement("div");
         cell.className = "cell";
@@ -32,9 +34,14 @@ function initGame() {
 
 async function makeMove(index) {
     if (board[index] !== "" || gameOver) return;
-
+    const cell = document.querySelectorAll(".cell")[index];
+    if (!cell) {
+        console.error("Cell not found for index:", index);
+        return;
+    }
     board[index] = currentPlayer;
-    document.querySelectorAll(".cell")[index].innerText = currentPlayer;
+    cell.innerText = currentPlayer;
+
 
     try {
         const pyBoard = pyodide.toPy([...board]);  // Convert JS array to Python list
